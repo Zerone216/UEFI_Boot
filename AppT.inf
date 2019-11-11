@@ -1,0 +1,154 @@
+## @file
+#  A simple, basic, EDK II native, "hello" application.
+#
+#   Copyright (c) 2010, Intel Corporation. All rights reserved.<BR>
+#   This program and the accompanying materials
+#   are licensed and made available under the terms and conditions of the BSD License
+#   which accompanies this distribution. The full text of the license may be found at
+#   http://opensource.org/licenses/bsd-license.
+#
+#   THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010007
+  BASE_NAME                      = OSBoot
+  FILE_GUID                      = 1a2b3c4d-ED34-44db-AE97-1FA5E4ED2116
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 0.1
+  ENTRY_POINT                    = UefiAppMain
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64 IPF
+#
+
+[Sources]
+	AppT.c
+#BASELIB
+  .\baselib\common.c
+  .\baselib\DevicePathToText.c
+  .\baselib\DevicePathFromText.c
+  .\baselib\DevicePathUtilities.c
+  .\baselib\fileopt.c
+  .\baselib\diskrw.c
+  .\baselib\scanfs.c
+  .\baselib\buffer.c
+  .\baselib\Log.c
+#PROKERNEL
+  .\prokernel\arith.c
+#GUILIB
+  .\guilib\GUILib.c
+#MAINFUNC
+  #common
+  .\mainfunc\common\biosinterface.c
+  .\mainfunc\common\smi.asm
+  .\mainfunc\common\Misc.c
+  .\mainfunc\common\mainfunc.c
+  .\mainfunc\common\para_use.c
+  .\mainfunc\common\EnterGptReboot.c
+  
+# Multi language string
+  .\mainfunc\common\FontLanguage.c
+  
+#install
+  .\mainfunc\install\install.c
+  
+#bootsel
+  .\mainfunc\bootsel\bootsel.c
+  
+#settings
+  .\mainfunc\admin\admin.c
+
+#netset
+  .\mainfunc\admin\NetConfigSet.c
+  .\mainfunc\admin\NetConfigSetWnd.c
+  .\mainfunc\admin\NetConfig_Param.c
+  .\mainfunc\common\NetValidityCheck.c
+  
+#partop
+  .\mainfunc\partop\partop.c
+  
+#hookblokio
+  .\mainfunc\hookblkio\hkblkio.c
+  .\mainfunc\hookblkio\debug\dghkblkio.c
+
+#password
+  .\mainfunc\password\Base64.c
+  .\mainfunc\password\RC4.c
+  .\mainfunc\password\Password_trans.c
+  
+#pci_e_register
+  .\mainfunc\pci_e_register\pci_e_register.c
+  .\mainfunc\pci_e_register\GetIoBaseAddr.c
+  .\mainfunc\pci_e_register\encrypkey.c
+  .\mainfunc\pci_e_register\asm_print.c
+  .\mainfunc\pci_e_register\base.inc
+  .\mainfunc\pci_e_register\base.asm
+
+#HDSplit
+  .\hdsplit\HDSplit.c
+  .\hdsplit\partition\disk.c
+  .\hdsplit\HardDiskManage\PartManage.c
+  .\hdsplit\HardDiskManage\PartManage_BasePartInfo.c
+  .\hdsplit\HardDiskManage\PartManage_ExtraPartInfo.c
+  .\hdsplit\HardDiskManage\PartManage_ProtectPartInfo.c
+  .\hdsplit\HardDiskManage\PartDetailList\PartDetailList.c
+  .\hdsplit\HardDiskManage\PartDetailList\PartDetailListWnd.c
+  .\hdsplit\HardDiskManage\PartDetailList\PartCreateOrModifyWnd.c
+  .\hdsplit\HardDiskManage\PartOwnership\PartOwnershipWnd.c
+  .\hdsplit\HardDiskManage\PartOwnership\PartReleationListWnd.c
+  .\hdsplit\HardDiskManage\PartManage_CommandList.c
+
+#bootvar 
+  .\bootvar\setupfile.c
+  .\bootvar\variable.c
+
+#probation
+	.\mainfunc\probation\probation.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+	UefiApplicationEntryPoint
+	UefiLib
+	BaseLib
+	BaseMemoryLib
+	PciLib
+	PcdLib
+
+[Guids]
+  gEfiPartTypeSystemPartGuid
+  gEfiPartTypeUnusedGuid
+  gEfiFileSystemInfoGuid
+  gEfiFileInfoGuid
+  gEfiVTUTF8Guid         | gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathFromText OR gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathToText ## SOMETIMES_CONSUMES ## GUID
+  gEfiVT100Guid          | gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathFromText OR gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathToText ## SOMETIMES_CONSUMES ## GUID
+  gEfiVT100PlusGuid      | gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathFromText OR gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathToText ## SOMETIMES_CONSUMES ## GUID
+  gEfiPcAnsiGuid         | gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathFromText OR gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathToText ## SOMETIMES_CONSUMES ## GUID
+  gEfiUartDevicePathGuid | gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathFromText OR gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathToText ## SOMETIMES_CONSUMES ## GUID
+  gEfiSasDevicePathGuid  | gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathFromText OR gEfiMdeModulePkgTokenSpaceGuid.PcdDevicePathSupportDevicePathToText ## SOMETIMES_CONSUMES ## GUID
+
+  gEfiVTUTF8Guid
+  gEfiVT100Guid
+  gEfiVT100PlusGuid
+  gEfiPcAnsiGuid
+  gEfiUartDevicePathGuid
+  gEfiSasDevicePathGuid
+
+[Protocols]
+  gEfiDevicePathToTextProtocolGuid
+  gEfiLoadedImageProtocolGuid
+  gEfiDevicePathProtocolGuid
+  gEfiBlockIoProtocolGuid                       # PROTOCOL BY_START
+  gEfiSimpleFileSystemProtocolGuid
+  gEfiSimpleTextInputExProtocolGuid
+  gEfiSimplePointerProtocolGuid
+  gEfiUdp4ServiceBindingProtocolGuid
+  gEfiUdp4ProtocolGuid
+  gEfiNetworkInterfaceIdentifierProtocolGuid_31
+  gEfiDebugPortProtocolGuid
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize   ## CONSUMES
